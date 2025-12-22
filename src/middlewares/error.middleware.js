@@ -1,0 +1,15 @@
+module.exports = (err, req, res, next) => {
+  console.error(err);
+
+ 
+  if (err.code === "ER_DUP_ENTRY") {
+    return res.status(409).json({ message: "Duplicate entry" });
+  }
+
+
+  if (err.code === "ER_NO_REFERENCED_ROW_2") {
+    return res.status(400).json({ message: "Invalid reference" });
+  }
+
+  res.status(500).json({ message: "Internal server error" });
+};

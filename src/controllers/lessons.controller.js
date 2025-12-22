@@ -1,25 +1,23 @@
 const db = require("../config/db");
 
-// Bütün lessons-ları götür
+
 exports.getAll = async (req, res) => {
   try {
     const [rows] = await db.query("SELECT * FROM lessons");
     res.json(rows);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+     next(err);
   }
 };
 
-// Bir lesson
+
 exports.getOne = async (req, res) => {
   try {
     const [rows] = await db.query("SELECT * FROM lessons WHERE id=?", [req.params.id]);
     if (rows.length === 0) return res.status(404).json({ message: "Lesson not found" });
     res.json(rows[0]);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    next(err);
   }
 };
 
@@ -39,8 +37,7 @@ exports.create = async (req, res) => {
 
     res.status(201).json({ message: "Lesson created" });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+     next(err);
   }
 };
 
@@ -64,8 +61,7 @@ exports.update = async (req, res) => {
 
     res.json({ message: "Lesson updated" });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+     next(err);
   }
 };
 
@@ -79,7 +75,6 @@ exports.delete = async (req, res) => {
 
     res.json({ message: "Lesson deleted" });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    next(err);
   }
 };

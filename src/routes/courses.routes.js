@@ -8,7 +8,7 @@ router.get("/", c.getAll);
 router.get("/:id", c.getOne);
 router.post("/", c.create);
 router.put("/:id", c.update);
-router.delete("/id", c.delete);
+router.delete("/:id", c.delete);
 
 /**
  * @swagger
@@ -98,7 +98,3 @@ router.put("/:id", c.update);
 router.delete("/:id", c.delete);
 
 module.exports = router;
-
-
-
-

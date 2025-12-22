@@ -11,9 +11,14 @@ exports.getAll = async (req, res) => {
     `);
     res.json(rows);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    if (err.code === "ER_NO_REFERENCED_ROW_2") {
+    return res.status(400).json({
+      message: "User or Course does not exist",
+    });
   }
+
+  res.status(500).json({ message: "Server error" });
+}
 };
 
 
@@ -26,9 +31,14 @@ exports.getOne = async (req, res) => {
       return res.status(404).json({ message: "Enrollment not found" });
     res.json(rows[0]);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    if (err.code === "ER_NO_REFERENCED_ROW_2") {
+    return res.status(400).json({
+      message: "User or Course does not exist",
+    });
   }
+
+  res.status(500).json({ message: "Server error" });
+}
 };
 
 exports.create = async (req, res) => {
@@ -49,9 +59,14 @@ exports.create = async (req, res) => {
 
     res.status(201).json({ message: "Enrollment created" });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    if (err.code === "ER_NO_REFERENCED_ROW_2") {
+    return res.status(400).json({
+      message: "User or Course does not exist",
+    });
   }
+
+  res.status(500).json({ message: "Server error" });
+}
 };
 
 
@@ -66,7 +81,12 @@ exports.delete = async (req, res) => {
 
     res.json({ message: "Enrollment deleted" });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    if (err.code === "ER_NO_REFERENCED_ROW_2") {
+    return res.status(400).json({
+      message: "User or Course does not exist",
+    });
   }
+
+  res.status(500).json({ message: "Server error" });
+}
 };

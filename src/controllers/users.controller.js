@@ -1,16 +1,14 @@
+const bcrypt = require("bcrypt");
 const db = require("../config/db");
-
 
 exports.getAll = async (req, res) => {
   try {
     const [rows] = await db.query("SELECT * FROM users");
     res.json(rows);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    next(err);
   }
 };
-
 
 exports.getOne = async (req, res) => {
   try {
@@ -21,16 +19,14 @@ exports.getOne = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     res.json(rows[0]);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    next(err);
   }
 };
 
-
 exports.create = async (req, res) => {
   try {
-    const { name, email, role } = req.body || {};
-
+    const { name, email, role, password } = req.body || {};
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     if (!name || !email) {
       return res.status(400).json({ message: "Name və Email tələb olunur" });
@@ -38,24 +34,22 @@ exports.create = async (req, res) => {
 
     const userRole = role || "Student";
 
-    await db.query("INSERT INTO users (name, email, role) VALUES (?, ?, ?)", [
+    await db.query("INSERT INTO users (name, email, role, password) VALUES (?, ?, ?,?)", [
       name,
       email,
       userRole,
+      hashedPassword,
     ]);
 
     res.status(201).json({ message: "User created" });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    next(err);
   }
 };
-
 
 exports.update = async (req, res) => {
   try {
     const { name, email, role } = req.body || {};
-
 
     if (!name || !email) {
       return res.status(400).json({ message: "Name və Email tələb olunur" });
@@ -73,11 +67,9 @@ exports.update = async (req, res) => {
 
     res.json({ message: "User updated" });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    next(err);
   }
 };
-
 
 exports.delete = async (req, res) => {
   try {
@@ -90,7 +82,6 @@ exports.delete = async (req, res) => {
 
     res.json({ message: "User deleted" });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    next(err);
   }
 };

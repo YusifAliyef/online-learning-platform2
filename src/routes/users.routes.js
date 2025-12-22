@@ -70,10 +70,10 @@ router.get("/", (req, res) => {});
  *                   example: 2
  *                 name:
  *                   type: string
- *                   example: Emiliya
+ *                   example: Ali
  *                 email:
  *                   type: string
- *                   example: emiliya@gmail.com
+ *                   example: ali@gmail.com
  *                 role:
  *                   type: string
  *                   example: Instructor

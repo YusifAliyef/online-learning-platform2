@@ -1,13 +1,12 @@
 const db = require("../config/db");
 
 
-exports.getAll = async (req, res) => {
+exports.getAll = async (req, res, next ) => {
   try {
     const [rows] = await db.query("SELECT * FROM courses");
     res.json(rows);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    next(err);
   }
 };
 
@@ -21,8 +20,7 @@ exports.getOne = async (req, res) => {
       return res.status(404).json({ message: "Course not found" });
     res.json(rows[0]);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    next(err);
   }
 };
 
@@ -46,8 +44,7 @@ exports.create = async (req, res) => {
 
     res.status(201).json({ message: "Course created" });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    next(err);
   }
 };
 
@@ -73,8 +70,7 @@ exports.update = async (req, res) => {
 
     res.json({ message: "Course updated" });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    next(err);
   }
 };
 
@@ -89,7 +85,6 @@ exports.delete = async (req, res) => {
 
     res.json({ message: "Course deleted" });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+     next(err);
   }
 };
